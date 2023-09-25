@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// your beautiful schema goes below :
+model User {
+  id       String @id @unique @default(uuid())
+  name     String @unique
+  email    String @unique
+  password String @unique
+  role     Role[]
+
+  @@map("users")
+}
+
+model Role {
+  id     String @id @unique @default(uuid())
+  admin  String
+  npc    String
+  user   User?  @relation(fields: [userId], references: [id])
+  userId String
+
+  @@map("roles")
+}
